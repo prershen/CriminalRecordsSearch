@@ -7,8 +7,8 @@ from bson import ObjectId
 import gridfs
 import os
 from PIL import Image
-client=MongoClient();
-db=client.demo;
+client=MongoClient()
+db=client.dbmslab
 
 class Uploader(Tk):
     def __init__(self, *args, **kwargs):
@@ -21,7 +21,7 @@ class Uploader(Tk):
     def get_image(self):
         self.file_name = askopenfilename(filetypes=[('JPEG FILES', '*.jpg')])
 
-        self.image = ImageTk.PhotoImage(Image.open(file_name))
+        self.image = ImageTk.PhotoImage(Image.open(self.file_name))
         preview = Toplevel()
         self.sketch=Label(preview,image=self.image)
         self.sketch.grid(row=0, column=1, padx=10, pady=10)
