@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 from tkinter import *
+from datetime import *
 
 class report:
     connection = mysql.connector.connect(host='localhost',
@@ -81,32 +82,33 @@ class report:
         self.root.mainloop()
 
     def personal(self):
-        root1=Tk()
-        root1.title('Personal Details')
-        l1=Label(self.root,text="Criminal Id: "+self.myresult[0])
-        l1.pack()
-        l2=Label(self.root,text="Name: "+self.myresult[1])
-        l2.pack()
-        l3=Label(self.root,text="DOB: "+self.myresult[2])
-        l3.pack()
-        l4=Label(self.root,text="Gender: "+self.myresult[3])
-        l4.pack()
-        l5=Label(self.root,text="Age: "+self.myresult[4])
-        l5.pack()
-        l6=Label(self.root,text="Address: "+self.myresult[5])
-        l6.pack()
-        l7=Label(self.root,text="Eye_color: "+self.myresult[6])
-        l7.pack()
-        l8=Label(self.root,text="Hair_color: "+self.myresult[7])
-        l8.pack()
-        l9=Label(self.root,text="Height: "+self.myresult[8])
-        l9.pack()
-        l10=Label(self.root,text="Weight: "+self.myresult[9])
-        l10.pack()
-        root1.mainloop()
+        self.root1=Tk()
+        self.root1.title('Personal Details')
+        l1=Label(self.root1,text="Criminal Id: "+self.myresult[0])
+        l1.grid(row=1,column=1,padx=10,pady=10)
+        l2=Label(self.root1,text="Name: "+self.myresult[1])
+        l2.grid(row=2,column=1,padx=10,pady=10)
+        l3=Label(self.root1,text="DOB: "+self.myresult[2].strftime('%Y-%m-%d'))
+        l3.grid(row=3,column=1,padx=10,pady=10)
+        l4=Label(self.root1,text="Gender: "+self.myresult[3])
+        l4.grid(row=4,column=1,padx=10,pady=10)
+        l5=Label(self.root1,text="Age: "+str(self.myresult[4]))
+        l5.grid(row=5,column=1,padx=10,pady=10)
+        l6=Label(self.root1,text="Address: "+self.myresult[5])
+        l6.grid(row=6,column=1,padx=10,pady=10)
+        l7=Label(self.root1,text="Eye_color: "+self.myresult[6])
+        l7.grid(row=7,column=1,padx=10,pady=10)
+        l8=Label(self.root1,text="Hair_color: "+self.myresult[7])
+        l8.grid(row=8,column=1,padx=10,pady=10)
+        l9=Label(self.root1,text="Height: "+self.myresult[8])
+        l9.grid(row=9,column=1,padx=10,pady=10)
+        l10=Label(self.root1,text="Weight: "+self.myresult[9])
+        l10.grid(row=10,column=1,padx=10,pady=10)
+        
+        self.root1.mainloop()
     def offence(self):
-        root2=Tk()
-        root2.title('Criminal History')
+        self.root2=Tk()
+        self.root2.title('Criminal History')
 
-        root2.mainloop()
+        self.root2.mainloop()
 found=report("P_1")
