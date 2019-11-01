@@ -30,9 +30,6 @@ class Uploader(Tk):
         self.save.grid(row=1, column=1, padx=10, pady=10)
         self.photo= Button(self.preview, command=self.createPhoto, text="Create Photo")
         self.photo.grid(row=3, column=1, padx=10, pady=10)
-        self.photo= Button(self.preview, command=self.back, text="Back")
-        self.photo.grid(row=5, column=1, padx=10, pady=10)
-        self.save.grid()
 
     def saving(self):
         #gfsPhoto =  gridfs.GridFS(db, "sketch")
@@ -40,10 +37,7 @@ class Uploader(Tk):
         #gfsFile = gfsPhoto.put(img,_id='S_1')
         print("Saving")
     def createPhoto(self):
-        self.text1=Text(self.preview)
-        self.text1.insert(END,"Processing").grid(row=7,column=1,padx=10,pady=10)
-        self.save.grid()
-
+        Label(self.preview,text="Processing...").grid(row=5,column=1)
 
 app = Uploader()
 app.mainloop()
