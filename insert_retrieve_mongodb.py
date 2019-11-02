@@ -56,7 +56,7 @@ def face_search(unknown_img_path):
        break
     if res==False:
       __id=None
-      pprint.pprint("Criminal record not found!")
+      
        
   folder = "/home/pratz/retrieved_photos"      
   for the_file in os.listdir(folder):
