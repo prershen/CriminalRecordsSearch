@@ -12,11 +12,12 @@ Created on Fri Oct 25 15:22:56 2019
 from pymongo import MongoClient
 from bson import ObjectId
 import gridfs
-import os
+import os,shutil
 from PIL import Image
 import base64
 import codecs
 import face_recognition
+import pprint
 
 client=MongoClient();
 db=client.mugshot;   
