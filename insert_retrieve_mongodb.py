@@ -43,10 +43,27 @@ def face_match(known_img_path,unknown_img_path):
   return results
   
 def face_search(unknown_img_path):
+  for itm in db.photos.find({}):
+      retrieve(itm.get('_id'))
   for filename in os.listdir("/home/pratz/retrieved_photos"):
-    res=face_match(filename,unknown_img_path)
+    res=face_match("/home/pratz/retrieved_photos/"+filename,unknown_img_path)
     if res==True:
-     return filename
-  return   
-
-
+       img = Image.open("/home/pratz/retrieved_photos/"+filename)
+       img = img.resize((1024,768))
+       l=filename.split('.')
+       __id=l[0]
+       break
+    if res==False:
+      __id=None
+      pprint.pprint("Criminal record not found!")
+       
+  folder = "/home/pratz/retrieved_photos"      
+  for the_file in os.listdir(folder):
+         file_path = os.path.join(folder, the_file)
+         try:
+           if os.path.isfile(file_path):
+            os.unlink(file_path)
+           elif os.path.isdir(file_path): shutil.rmtree(file_path)
+         except Exception as e:
+            print(e)
+   return __id
