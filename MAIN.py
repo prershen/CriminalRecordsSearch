@@ -60,9 +60,9 @@ class Uploader(Tk):
 
 class report:
     connection = mysql.connector.connect(host='localhost',
-                                         database='dbms',
-                                         user='admin',
-                                         password='root1234')
+                                         database='dbmslab',
+                                         user='root',
+                                         password='Perushenoy@99')
     client=MongoClient();
     db=client.mugshot;  
     def __init__(self, p_id):
@@ -107,7 +107,7 @@ class report:
                     sql=sql+",'"+i+"'"
                 sql=sql+");"
                 self.mycursor.execute(sql)
-                self.traffic=self.mycursor.fetchone()
+                self.traffic=self.mycursor.fetchall()
             
             if len(self.rlist)!=0:
                 sql="SELECT * FROM robbery WHERE offence_id IN("
@@ -119,7 +119,7 @@ class report:
                     sql=sql+",'"+i+"'"
                 sql=sql+");"
                 self.mycursor.execute(sql)
-                self.robbery=self.mycursor.fetchone()
+                self.robbery=self.mycursor.fetchall()
             if len(self.vlist)!=0:
                 sql="SELECT * FROM violence WHERE offence_id IN("
                 flag=0
@@ -130,7 +130,7 @@ class report:
                     sql=sql+",'"+i+"'"
                 sql=sql+");"
                 self.mycursor.execute(sql)
-                self.violence=self.mycursor.fetchone()
+                self.violence=self.mycursor.fetchall()
             if len(self.dlist)!=0:
                 sql="SELECT * FROM drug WHERE offence_id IN("
                 flag=0
@@ -141,7 +141,7 @@ class report:
                     sql=sql+",'"+i+"'"       
                 sql=sql+");"
                 self.mycursor.execute(sql)
-                self.drug=self.mycursor.fetchone()
+                self.drug=self.mycursor.fetch()
         
             
             self.root.mainloop()
@@ -177,14 +177,29 @@ class report:
     def offence(self):
         self.root2=Tk()
         self.root2.title('Criminal History')
-        l1=Label(self.root2,text="Offence_Id: "+self.traffic[0])
-        l1.grid(row=1,column=1,padx=10,pady=10)
-        l2=Label(self.root2,text="Date of offence: "+self.traffic[1].strftime('%Y-%m-%d'))
-        l2.grid(row=2,column=1,padx=10,pady=10)
-        l3=Label(self.root2,text="type: "+self.traffic[2])
-        l3.grid(row=3,column=1,padx=10,pady=10)
-        l4=Label(self.root2,text="status: "+self.traffic[3])
-        l4.grid(row=4,column=1,padx=10,pady=10)
+        #Traffic
+        Label(self.root2,text="Offence_Id: "+self.traffic[0]).grid(row=1,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.traffic[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.traffic[2]).grid(row=3,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.traffic[3]).grid(row=4,column=1,padx=10,pady=10)
+        #Robbery
+        Label(self.root2,text="Offence_Id: "+self.robbery[0]).grid(row=1,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.robbery[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="Items: "+self.robbery[2]).grid(row=3,column=1,padx=10,pady=10)
+        Label(self.root2,text="Status: "+self.robbery[3]).grid(row=4,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.robbery[4]).grid(row=5,column=1,padx=10,pady=10)
+        #Violence
+        Label(self.root2,text="Offence_Id: "+self.violence[0]).grid(row=1,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.violence[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.violence[2]).grid(row=3,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.violence[3]).grid(row=4,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.violence[4]).grid(row=5,column=1,padx=10,pady=10)
+        #Drug
+        Label(self.root2,text="Offence_Id: "+self.drug[0]).grid(row=1,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.drug[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.drug[2]).grid(row=3,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.drug[3]).grid(row=4,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.drug[4]).grid(row=5,column=1,padx=10,pady=10)
         self.root2.mainloop()
     
     
