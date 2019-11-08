@@ -37,7 +37,14 @@ class Uploader(Tk):
         #gfsFile = gfsPhoto.put(img,_id='S_1')
         print("Saving")
     def createPhoto(self):
-        Label(self.preview,text="Processing...").grid(row=5,column=1)
+        self.preview1=Toplevel()
+        self.photo=Label(self.preview1)#,image=self.photo)
+        self.photo.grid(row=0,column=1,padx=10,pady=10)
+        self.search=Button(self.preview1,command=self.searching,text="Search")
+        self.search.grid(row=1,column=1,padx=10,pady=10)
+    def searching(self):
+        #calls the processing
+        Label(self.preview1,text="The record is found!")
 
 app = Uploader()
 app.mainloop()
