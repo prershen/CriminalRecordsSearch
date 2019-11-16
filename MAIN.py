@@ -86,7 +86,8 @@ class Uploader(Tk):
 
     def createPhoto(self):
         self.preview1=Toplevel()
-        self.photo=Label(self.preview1)#,image=self.photo)
+        predict_photo()
+        self.photo=Label(self.preview1,image=self.predicted_filename)
         self.photo.grid(row=0,column=1,padx=10,pady=10)
         self.search=Button(self.preview1,command=self.searching,text="Search")
         self.search.grid(row=1,column=1,padx=10,pady=10)
@@ -221,28 +222,32 @@ class report:
         self.root2=Tk()
         self.root2.title('Criminal History')
         #Traffic        
-        Label(self.root2,text="Offence_Id: "+self.traffic[0][0]).grid(row=1,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.traffic[0][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.traffic[0][2]).grid(row=3,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.traffic[0][3]).grid(row=4,column=1,padx=10,pady=10)
+        for i in range(1,len(self.tlist)):
+            Label(self.root2,text="Offence_Id: "+self.traffic[i][0]).grid(row=1,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.traffic[i][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+            Label(self.root2,text="type: "+self.traffic[i][2]).grid(row=3,column=1,padx=10,pady=10)
+            Label(self.root2,text="status: "+self.traffic[i][3]).grid(row=4,column=1,padx=10,pady=10)
         #Robbery
-        Label(self.root2,text="Offence_Id: "+self.robbery[0][0]).grid(row=5,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.robbery[0][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="Items: "+self.robbery[0][2]).grid(row=6,column=1,padx=10,pady=10)
-        Label(self.root2,text="Status: "+self.robbery[0][3]).grid(row=7,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.robbery[0][4]).grid(row=8,column=1,padx=10,pady=10)
+        for i in range(1,len(self.rlist)):
+            Label(self.root2,text="Offence_Id: "+self.robbery[i][0]).grid(row=5,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.robbery[i][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+            Label(self.root2,text="Items: "+self.robbery[i][2]).grid(row=6,column=1,padx=10,pady=10)
+            Label(self.root2,text="Status: "+self.robbery[i][3]).grid(row=7,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.robbery[i][4]).grid(row=8,column=1,padx=10,pady=10)
         #Violence
-        Label(self.root2,text="Offence_Id: "+self.violence[0][0]).grid(row=9,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.violence[0][1].strftime('%Y-%m-%d')).grid(row=10,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.violence[0][2]).grid(row=11,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.violence[0][3]).grid(row=12,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.violence[0][4]).grid(row=13,column=1,padx=10,pady=10)
+        for i in range(1,len(self.vlist)):
+            Label(self.root2,text="Offence_Id: "+self.violence[i][0]).grid(row=9,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.violence[i][1].strftime('%Y-%m-%d')).grid(row=10,column=1,padx=10,pady=10)
+            Label(self.root2,text="type: "+self.violence[i][2]).grid(row=11,column=1,padx=10,pady=10)
+            Label(self.root2,text="status: "+self.violence[i][3]).grid(row=12,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.violence[i][4]).grid(row=13,column=1,padx=10,pady=10)
         #Drug
-        Label(self.root2,text="Offence_Id: "+self.drug[0][0]).grid(row=14,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.drug[0][1].strftime('%Y-%m-%d')).grid(row=15,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.drug[0][2]).grid(row=16,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.drug[0][3]).grid(row=17,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.drug[0][4]).grid(row=18,column=1,padx=10,pady=10)
+        for i in range(1,len(self.dlist)):
+            Label(self.root2,text="Offence_Id: "+self.drug[i][0]).grid(row=14,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.drug[i][1].strftime('%Y-%m-%d')).grid(row=15,column=1,padx=10,pady=10)
+            Label(self.root2,text="type: "+self.drug[i][2]).grid(row=16,column=1,padx=10,pady=10)
+            Label(self.root2,text="status: "+self.drug[i][3]).grid(row=17,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.drug[i][4]).grid(row=18,column=1,padx=10,pady=10)
         self.root2.mainloop()
     
     
