@@ -87,7 +87,15 @@ class Uploader(Tk):
     def createPhoto(self):
         self.preview1=Toplevel()
         self.predict_photo()
-        self.photo=Label(self.preview1,image=self.predicted_filename)
+        #denoising
+        img=cv2.imread(self.predict_photo)
+        img = np.array(img, dtype=np.uint8)
+        converted_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        self.photo = cv2.fastNlMeansDenoisingColored(converted_img, None, 10, 10, 7, 21)
+        self.photo_filename='/home/pratz/denoise.jpg'
+        cv2.imsave(self.photo_filename,self.photo)
+        
+        self.photo=Label(self.preview1,image=self.photo_filename)
         self.photo.grid(row=0,column=1,padx=10,pady=10)
         self.search=Button(self.preview1,command=self.searching,text="Search")
         self.search.grid(row=1,column=1,padx=10,pady=10)
@@ -96,8 +104,8 @@ class Uploader(Tk):
     def searching(self):
         #calls the processing
         Label(self.preview1,text="The record is found!")
-        print(self.predicted_filename)
-        self.pid=face_search(self.predicted_filename)
+        print(self.photo_filename)
+        self.pid=face_search(self.photo_filename)
         if(self.pid!=None): 
             found=report(self.pid)
 
