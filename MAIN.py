@@ -15,12 +15,28 @@ from datetime import *
 
 from bson import ObjectId
 
-import os
-from PIL import Image
+
+
 import base64
 import codecs
 import face_recognition
 import pprint
+
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.models import model_from_json
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+
+import keras
+from keras.models import load_model
+
+import cv2
+import keras.backend as K
+from PIL import Image, ImageFilter
+import PIL
+
 
 client=MongoClient()
 db=client.mugshot
@@ -43,6 +59,30 @@ class Uploader(Tk):
         self.sketch.grid(row=0, column=1, padx=10, pady=10)
         self.photo= Button(self.preview, command=self.createPhoto, text="Create Photo")
         self.photo.grid(row=3, column=1, padx=10, pady=10)
+        
+    def predict_photo(self):
+        json_file = open('/home/pratz/Downloads/dataset/results/model28000.json', 'r')
+        loaded_model_json = json_file.read()
+        json_file.close()
+        loaded_model = keras.models.model_from_json(loaded_model_json)
+        # load weights into new model
+        loaded_model.load_weights("/home/pratz/Downloads/dataset/results/model28000.h5")
+        print("Loaded model from disk")
+        im = cv2.imread(self.file_name,0)
+        plt.imshow(im)
+        plt.show()    
+        im = cv2.resize(im,(64,64))
+        im = im.reshape((1,4096))
+        img = loaded_model.predict(im)[0]
+        #img=cv2.GaussianBlur(img, (3,3), 0)
+        #img = cv2.addWeighted(blur,1.5,img,-0.5,0)
+        gen_img = (1/2.5) * img + 0.5 
+        #cv2.imwrite("/home/pratz",gen_img)
+        self.predicted_filename="/home/pratz/predicted_photo.jpg"
+        plt.imsave(self.predicted_filename,gen_img)       
+        plt.imshow(gen_img)
+        plt.show()
+        
 
     def createPhoto(self):
         self.preview1=Toplevel()
@@ -50,11 +90,13 @@ class Uploader(Tk):
         self.photo.grid(row=0,column=1,padx=10,pady=10)
         self.search=Button(self.preview1,command=self.searching,text="Search")
         self.search.grid(row=1,column=1,padx=10,pady=10)
+        
+        
     def searching(self):
         #calls the processing
         Label(self.preview1,text="The record is found!")
-        print(self.file_name)
-        self.pid=face_search(self.file_name)
+        print(self.predicted_filename)
+        self.pid=face_search(self.predicted_filename)
         if(self.pid!=None): 
             found=report(self.pid)
 
@@ -178,8 +220,7 @@ class report:
     def offence(self):
         self.root2=Tk()
         self.root2.title('Criminal History')
-        #Traffic
-        
+        #Traffic        
         Label(self.root2,text="Offence_Id: "+self.traffic[0][0]).grid(row=1,column=1,padx=10,pady=10)
         Label(self.root2,text="Date of offence: "+self.traffic[0][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
         Label(self.root2,text="type: "+self.traffic[0][2]).grid(row=3,column=1,padx=10,pady=10)
