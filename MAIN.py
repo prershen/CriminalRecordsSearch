@@ -86,7 +86,7 @@ class Uploader(Tk):
 
     def createPhoto(self):
         self.preview1=Toplevel()
-        predict_photo()
+        self.predict_photo()
         self.photo=Label(self.preview1,image=self.predicted_filename)
         self.photo.grid(row=0,column=1,padx=10,pady=10)
         self.search=Button(self.preview1,command=self.searching,text="Search")
