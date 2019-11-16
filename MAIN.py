@@ -1,20 +1,21 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from PIL import ImageTk, Image
+import tkinter
 
 from pymongo import MongoClient
 from bson import ObjectId
-import gridfs
+
 import os
 from PIL import Image
 import mysql.connector
 from mysql.connector import Error
 from tkinter import *
 from datetime import *
-from pymongo import MongoClient
+
 from bson import ObjectId
-import gridfs
-import os,shutil
+
+import os
 from PIL import Image
 import base64
 import codecs
@@ -60,9 +61,9 @@ class Uploader(Tk):
 
 class report:
     connection = mysql.connector.connect(host='localhost',
-                                         database='dbmslab',
-                                         user='root',
-                                         password='Perushenoy@99')
+                                         database='dbms',
+                                         user='admin',
+                                         password='root1234')
     client=MongoClient();
     db=client.mugshot;  
     def __init__(self, p_id):
@@ -178,28 +179,29 @@ class report:
         self.root2=Tk()
         self.root2.title('Criminal History')
         #Traffic
-        Label(self.root2,text="Offence_Id: "+self.traffic[0]).grid(row=1,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.traffic[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.traffic[2]).grid(row=3,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.traffic[3]).grid(row=4,column=1,padx=10,pady=10)
+        
+        Label(self.root2,text="Offence_Id: "+self.traffic[0][0]).grid(row=1,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.traffic[0][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.traffic[0][2]).grid(row=3,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.traffic[0][3]).grid(row=4,column=1,padx=10,pady=10)
         #Robbery
-        Label(self.root2,text="Offence_Id: "+self.robbery[0]).grid(row=1,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.robbery[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="Items: "+self.robbery[2]).grid(row=3,column=1,padx=10,pady=10)
-        Label(self.root2,text="Status: "+self.robbery[3]).grid(row=4,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.robbery[4]).grid(row=5,column=1,padx=10,pady=10)
+        Label(self.root2,text="Offence_Id: "+self.robbery[0][0]).grid(row=5,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.robbery[0][1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
+        Label(self.root2,text="Items: "+self.robbery[0][2]).grid(row=6,column=1,padx=10,pady=10)
+        Label(self.root2,text="Status: "+self.robbery[0][3]).grid(row=7,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.robbery[0][4]).grid(row=8,column=1,padx=10,pady=10)
         #Violence
-        Label(self.root2,text="Offence_Id: "+self.violence[0]).grid(row=1,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.violence[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.violence[2]).grid(row=3,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.violence[3]).grid(row=4,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.violence[4]).grid(row=5,column=1,padx=10,pady=10)
+        Label(self.root2,text="Offence_Id: "+self.violence[0][0]).grid(row=9,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.violence[0][1].strftime('%Y-%m-%d')).grid(row=10,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.violence[0][2]).grid(row=11,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.violence[0][3]).grid(row=12,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.violence[0][4]).grid(row=13,column=1,padx=10,pady=10)
         #Drug
-        Label(self.root2,text="Offence_Id: "+self.drug[0]).grid(row=1,column=1,padx=10,pady=10)
-        Label(self.root2,text="Date of offence: "+self.drug[1].strftime('%Y-%m-%d')).grid(row=2,column=1,padx=10,pady=10)
-        Label(self.root2,text="type: "+self.drug[2]).grid(row=3,column=1,padx=10,pady=10)
-        Label(self.root2,text="status: "+self.drug[3]).grid(row=4,column=1,padx=10,pady=10)
-        Label(self.root2,text="Case Details: "+self.drug[4]).grid(row=5,column=1,padx=10,pady=10)
+        Label(self.root2,text="Offence_Id: "+self.drug[0][0]).grid(row=14,column=1,padx=10,pady=10)
+        Label(self.root2,text="Date of offence: "+self.drug[0][1].strftime('%Y-%m-%d')).grid(row=15,column=1,padx=10,pady=10)
+        Label(self.root2,text="type: "+self.drug[0][2]).grid(row=16,column=1,padx=10,pady=10)
+        Label(self.root2,text="status: "+self.drug[0][3]).grid(row=17,column=1,padx=10,pady=10)
+        Label(self.root2,text="Case Details: "+self.drug[0][4]).grid(row=18,column=1,padx=10,pady=10)
         self.root2.mainloop()
     
     
@@ -250,6 +252,4 @@ def face_search(unknown_img_path):
 print(_id)"""
 app = Uploader()
 app.mainloop()
-
-
 
