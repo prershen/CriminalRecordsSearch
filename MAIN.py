@@ -12,7 +12,11 @@ import mysql.connector
 from mysql.connector import Error
 from tkinter import *
 from datetime import *
+
 from bson import ObjectId
+
+
+
 import base64
 import codecs
 import face_recognition
@@ -223,38 +227,42 @@ class report:
         #Traffic       
         i=j=k=l=0;
         
-        for i in range(1,len(self.tlist)):
+        for i in range(0,len(self.tlist)):
             Label(self.root2,text="Offence_Id: "+self.traffic[i][0]).grid(row=i+1,column=1,padx=10,pady=10)
             Label(self.root2,text="Date of offence: "+self.traffic[i][1].strftime('%Y-%m-%d')).grid(row=i+2,column=1,padx=10,pady=10)
             Label(self.root2,text="type: "+self.traffic[i][2]).grid(row=i+3,column=1,padx=10,pady=10)
             Label(self.root2,text="status: "+self.traffic[i][3]).grid(row=i+4,column=1,padx=10,pady=10)
+            i=i+4
             print(len(self.tlist))
             
         #Robbery
-        for j in range(1,len(self.rlist)):
+        for j in range(0,len(self.rlist)):
             Label(self.root2,text="Offence_Id: "+self.robbery[j][0]).grid(row=i+j+1,column=1,padx=10,pady=10)
             Label(self.root2,text="Date of offence: "+self.robbery[j][1].strftime('%Y-%m-%d')).grid(row=i+j+2,column=1,padx=10,pady=10)
             Label(self.root2,text="Items: "+self.robbery[j][2]).grid(row=i+j+3,column=1,padx=10,pady=10)
             Label(self.root2,text="Status: "+self.robbery[j][3]).grid(row=i+j+4,column=1,padx=10,pady=10)
             Label(self.root2,text="Case Details: "+self.robbery[j][4]).grid(row=i+j+5,column=1,padx=10,pady=10)
+            i=i+5
             print(len(self.rlist))
             
         #Violence
-        for k in range(1,len(self.vlist)):
+        for k in range(0,len(self.vlist)):
             Label(self.root2,text="Offence_Id: "+self.violence[k][0]).grid(row=i+j+k+1,column=1,padx=10,pady=10)
             Label(self.root2,text="Date of offence: "+self.violence[k][1].strftime('%Y-%m-%d')).grid(row=i+j+k+2,column=1,padx=10,pady=10)
             Label(self.root2,text="type: "+self.violence[k][2]).grid(row=i+j+k+3,column=1,padx=10,pady=10)
             Label(self.root2,text="status: "+self.violence[k][3]).grid(row=i+j+k+4,column=1,padx=10,pady=10)
             Label(self.root2,text="Case Details: "+self.violence[k][4]).grid(row=i+j+k+5,column=1,padx=10,pady=10)
+            i=i+5
             print(len(self.vlist))
             
         #Drug
-        for l in range(1,len(self.dlist)):
+        for l in range(0,len(self.dlist)):
             Label(self.root2,text="Offence_Id: "+self.drug[l][0]).grid(row=i+j+k+l+1,column=1,padx=10,pady=10)
             Label(self.root2,text="Date of offence: "+self.drug[l][1].strftime('%Y-%m-%d')).grid(row=i+j+k+l+2,column=1,padx=10,pady=10)
             Label(self.root2,text="type: "+self.drug[l][2]).grid(row=i+j+k+l+3,column=1,padx=10,pady=10)
             Label(self.root2,text="status: "+self.drug[l][3]).grid(row=i+j+k+l+4,column=1,padx=10,pady=10)
             Label(self.root2,text="Case Details: "+self.drug[l][4]).grid(row=i+j+k+l+5,column=1,padx=10,pady=10)
+            i=i+5
             print(len(self.dlist))
             
         self.root2.mainloop()
