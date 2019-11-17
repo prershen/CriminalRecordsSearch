@@ -100,13 +100,13 @@ class Uploader(Tk):
         #calls the processing      
         
         print(self.predicted_filename)
-        self.pid,no_of_records=face_search(self.predicted_filename)
-        for i in range(1,no_of_records):
-          if(self.pid!=None): 
+        self.pid=face_search(self.predicted_filename)
+        
+        if(self.pid!=None): 
              found=report(self.pid)
              
-        if(self.pid==None):             
-             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)
+        """if(self.pid==None):             
+             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)"""
              
              
             
@@ -299,7 +299,7 @@ def face_match(known_img_path,unknown_img_path):
       unknown_image = face_recognition.load_image_file(unknown_img_path)
       biden_encoding = face_recognition.face_encodings(known_image)[0]
       unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.7)
+      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.1)
       return results[0]
   
 def face_search(unknown_img_path):
@@ -319,7 +319,7 @@ def face_search(unknown_img_path):
             else:
                 print("Facesearch not done")  
                 __id=None        
-          return __id,no_of_records  
+          return __id  
 
 """_id=face_search("/home/pratz/test_photos/meghna.jpeg")
 print(_id)"""
