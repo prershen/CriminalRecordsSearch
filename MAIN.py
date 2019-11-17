@@ -101,15 +101,12 @@ class Uploader(Tk):
         
         print(self.predicted_filename)
         self.pid=face_search(self.predicted_filename)
-        
+        if(self.pid==None):             
+             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)
         if(self.pid!=None): 
              found=report(self.pid)
              
-        """if(self.pid==None):             
-             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)"""
-             
-             
-            
+       
         
 
 
@@ -281,10 +278,7 @@ class report:
         string = base64.b64encode(imageFile.read())   
       db.photos.insert_one({"_id":__id,"img":string,"offence_id":offence_id})
     
-    """insert("P_2","/home/pratz/Downloads/dataset/pix2pix/face/000001.jpg",["T_1","V_1","R_3","D_2"])"""
-    """insert("P_3","/home/pratz/Downloads/dataset/pix2pix/face/000129.jpg",["T_4","V_2","R_1"])"""
-    """insert("P_4","/home/pratz/Downloads/dataset/sketch-to-images-resized-photos2/resized photos2zip/new_imgs/f-028-01.jpg",["R_2","R_4","T_2"])"""
-
+   
 def retrieve(__id):    
       img_dict=db.photos.find_one({"_id":__id},{"img":1,"offence_id":1,"_id":0})
       string=img_dict["img"] 
@@ -299,12 +293,11 @@ def face_match(known_img_path,unknown_img_path):
       unknown_image = face_recognition.load_image_file(unknown_img_path)
       biden_encoding = face_recognition.face_encodings(known_image)[0]
       unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.1)
+      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.7)
       return results[0]
   
 def face_search(unknown_img_path):
-          no_of_records=db.photos.find({}).count()
-          print(no_of_records)
+         
           for itm in db.photos.find({}):
               retrieve(itm.get('_id'))
           for filename in os.listdir("/home/pratz/retrieved_photos"):
@@ -319,7 +312,7 @@ def face_search(unknown_img_path):
             else:
                 print("Facesearch not done")  
                 __id=None        
-          return __id  
+          return __id
 
 """_id=face_search("/home/pratz/test_photos/meghna.jpeg")
 print(_id)"""
