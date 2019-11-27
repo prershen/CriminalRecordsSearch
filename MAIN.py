@@ -15,8 +15,6 @@ from datetime import *
 
 from bson import ObjectId
 
-
-
 import base64
 import codecs
 import face_recognition
@@ -32,7 +30,7 @@ from matplotlib import pyplot as plt
 import keras
 from keras.models import load_model
 
-import cv2
+from cv2 import cv2
 import keras.backend as K
 from PIL import Image, ImageFilter
 import PIL
