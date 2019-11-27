@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Nov 27 23:22:14 2019
+
+@author: pratz
+"""
+
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from PIL import ImageTk, Image
@@ -59,40 +67,44 @@ class Uploader(Tk):
         #Button(self.root, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
         
         Label(self.root, text="Please enter details below to login").grid(padx=10,pady=10)
-        Label(self.root, text="").grid(padx=10,pady=10)
-    
+       # Label(self.root, text="").grid(padx=10,pady=10)
+        self.login = ImageTk.PhotoImage(Image.open("/home/pratz/login1.jpeg"))
+
+        #Label(self.root, image=self.login).grid(row=0,column=0)
+        background=Label(self.root, image=self.login).place(x=0,y=0,relwidth=1, relheight=1)
         global username_verify
         global password_verify
     
         username_verify = StringVar()
         password_verify = StringVar()
     
-    
-        Label(self.root, text="Username * ").grid(padx=10,pady=10)
-        username_login_entry = Entry(self.root, textvariable=username_verify)
-        username_login_entry.grid(padx=10,pady=10)
-        Label(self.root, text="").grid(padx=10,pady=10)
-        Label(self.root, text="Password * ").grid(padx=10,pady=10)
-        password__login_entry = Entry(self.root, textvariable=password_verify, show= '*')
-        password__login_entry.grid(padx=10,pady=10)
-        Label(self.root, text="").grid(padx=10,pady=10)
-        Button(self.root, text="Login", width=10, height=1, command=self.login_verification).grid(padx=10,pady=10)
+        
+        Label(self.root, text="USERNAME",font='gothic 16 bold',fg="white",bg="Dodgerblue2").grid(padx=170,pady=10)
+        username_login_entry = Entry(self.root, textvariable=username_verify,width=40)
+        username_login_entry.grid(padx=10,pady=10,ipady=7)
+        #Label(self.root, text="").grid(padx=100,pady=100)
+        Label(self.root, text="PASSWORD",font='gothic 16 bold',fg="white",bg="Dodgerblue2").grid(padx=10,pady=10)
+        password__login_entry = Entry(self.root, textvariable=password_verify, show= '*',width=40)
+        password__login_entry.grid(padx=170,pady=10,ipady=7)
+        #Label(self.root, text="").grid(padx=10,pady=10)
+        Button(self.root, text="LOGIN", width=20, height=2, command=self.login_verification,bg="red2",fg="white").grid(padx=10,pady=70)
 
     def login_verification(self):
         
-        connection = mysql.connector.connect(host='localhost',
+        self.connection = mysql.connector.connect(host='localhost',
                                          database='dbms',
                                          user='admin',
                                          password='root1234')
         self.mycursor=self.connection.cursor()
-        sql = "SELECT * FROM login WHERE user like '"+username_verify+"' and  password like '"+password_verify+"';"
+        
+        sql = "SELECT * FROM login WHERE user like '"+str(username_verify.get())+"' and  password like '"+str(password_verify.get())+"';"
         self.mycursor.execute(sql)
         self.login_result = self.mycursor.fetchone()
         if self.login_result!=None:
             self.preview2=Toplevel(self.root)
             self.logo = ImageTk.PhotoImage(Image.open("/home/pratz/Criminal-Check.png"))
             Label(self.preview2, image=self.logo).grid(row=0,column=0)
-            Button(self.preview2, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
+            Button(self.preview2, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=2,width=20,font='TIMES 18 bold').grid(padx=10,pady=10)
         else:
             self.preview2=Toplevel(self.root)
             Label(self.preview2,text="Wrong credentials. Try Again").grid(padx=10,pady=10)
@@ -181,9 +193,9 @@ class report:
         if self.mycursor.rowcount>0:
                 #print ("Criminal_Id: %s\nName: %s\nDOB: %s\nGender: %s\nAge: %d\nAddress: %s\nEye_color: %s\nHair_color: %s\n Height: %s\nWeight: %s\n"%(x["id"],x["criminal_name"],x["DOB"],x["gender"],x["age"],x["address"],x["eye_color"],x["hair"],x["height"],x["weight"]))
                 #print ("Criminal_Id: %s\nName: %s\nDOB: %s\nGender: %s\nAge: %d\nAddress: %s\nEye_color: %s\nHair_color: %s\n Height: %s\nWeight: %s\n"%(x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9]))
-            Button(self.root,text="Personal Details",command=self.personal,bg="black",fg="white",height=3,width=20).grid(row=1,column=1,padx=100,pady=30)
+            Button(self.root,text="PERSONAL DETAILS",command=self.personal,bg="black",fg="white",height=3,width=20).grid(row=1,column=1,padx=100,pady=30)
             #b1.pack()
-            Button(self.root,text="Criminal History",command=self.offence,bg="black",fg="white",height=3,width=20).grid(row=2,column=1,padx=100,pady=50)
+            Button(self.root,text="CRIMINAL HISTORY",command=self.offence,bg="black",fg="white",height=3,width=20).grid(row=2,column=1,padx=100,pady=50)
             #b2.pack()
             self.tlist=[] #traffic
             self.rlist=[] #robbery
