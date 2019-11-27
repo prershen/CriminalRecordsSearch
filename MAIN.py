@@ -37,6 +37,8 @@ import keras.backend as K
 from PIL import Image, ImageFilter
 import PIL
 
+from ttkthemes import themed_tk as tk
+from tkinter import ttk
 
 client=MongoClient()
 db=client.mugshot
@@ -44,11 +46,12 @@ db=client.mugshot
 class Uploader(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.root = Canvas()
-        self.root.grid()
+        self.root = tk.ThemedTk()
+        self.root.get_themes()                 # Returns a list of all themes that can be set
+        self.root.set_theme("radiance") 
         self.title('Criminal Search')  
-        Button(self.root, text='Upload an image', command=self.get_image).grid(padx=50,pady=5)
-        Label(text='Click preview picture to upload').grid(pady=5)
+        ttk.Button(self.root, text='Upload a sketch', command=self.get_image).grid(padx=50,pady=5)
+        ttk.Label(text='Click preview picture to upload').grid(pady=5)
 
     def get_image(self):
         self.file_name = askopenfilename(filetypes=[('JPEG FILES', '*.jpg')])
@@ -77,8 +80,9 @@ class Uploader(Tk):
         #img=cv2.GaussianBlur(img, (3,3), 0)
         #img = cv2.addWeighted(blur,1.5,img,-0.5,0)
         gen_img = (1/2.5) * img + 0.5 
-        #cv2.imwrite("/home/pratz",gen_img)
+        #cv2.imwrite("/home/pratz/predicted_photo.jpg",gen_img)
         self.predicted_filename="/home/pratz/predicted_photo.jpg"
+        
         plt.imsave(self.predicted_filename,gen_img)       
         plt.imshow(gen_img)
         plt.show()
@@ -87,27 +91,29 @@ class Uploader(Tk):
     def createPhoto(self):
         self.preview1=Toplevel()
         self.predict_photo()
-        #denoising
-        img=cv2.imread(self.predict_photo)
-        img = np.array(img, dtype=np.uint8)
-        converted_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        self.photo = cv2.fastNlMeansDenoisingColored(converted_img, None, 10, 10, 7, 21)
-        self.photo_filename='/home/pratz/denoise.jpg'
-        cv2.imsave(self.photo_filename,self.photo)
+        self.image = ImageTk.PhotoImage(Image.open(self.predicted_filename))
         
-        self.photo=Label(self.preview1,image=self.photo_filename)
+        self.photo=Label(self.preview1,image=self.image)
         self.photo.grid(row=0,column=1,padx=10,pady=10)
         self.search=Button(self.preview1,command=self.searching,text="Search")
         self.search.grid(row=1,column=1,padx=10,pady=10)
         
         
     def searching(self):
-        #calls the processing
-        Label(self.preview1,text="The record is found!")
-        print(self.photo_filename)
-        self.pid=face_search(self.photo_filename)
+        #calls the processing      
+        
+        print(self.predicted_filename)
+        self.pid=face_search(self.predicted_filename)
+        
         if(self.pid!=None): 
-            found=report(self.pid)
+             found=report(self.pid)
+             
+        """if(self.pid==None):             
+             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)"""
+             
+             
+            
+        
 
 
 class report:
@@ -193,7 +199,7 @@ class report:
                     sql=sql+",'"+i+"'"       
                 sql=sql+");"
                 self.mycursor.execute(sql)
-                self.drug=self.mycursor.fetch()
+                self.drug=self.mycursor.fetchall()
         
             
             self.root.mainloop()
@@ -229,33 +235,47 @@ class report:
     def offence(self):
         self.root2=Tk()
         self.root2.title('Criminal History')
-        #Traffic        
-        for i in range(1,len(self.tlist)):
+        #Traffic       
+        i=j=k=l=0;
+        
+        for i in range(0,len(self.tlist)):
             Label(self.root2,text="Offence_Id: "+self.traffic[i][0]).grid(row=i+1,column=1,padx=10,pady=10)
             Label(self.root2,text="Date of offence: "+self.traffic[i][1].strftime('%Y-%m-%d')).grid(row=i+2,column=1,padx=10,pady=10)
             Label(self.root2,text="type: "+self.traffic[i][2]).grid(row=i+3,column=1,padx=10,pady=10)
             Label(self.root2,text="status: "+self.traffic[i][3]).grid(row=i+4,column=1,padx=10,pady=10)
+            i=i+4
+            print(len(self.tlist))
+            
         #Robbery
-        for f in range(1,len(self.rlist)):
-            Label(self.root2,text="Offence_Id: "+self.robbery[f][0]).grid(row=i+f+1,column=1,padx=10,pady=10)
-            Label(self.root2,text="Date of offence: "+self.robbery[f][1].strftime('%Y-%m-%d')).grid(row=i+f+2,column=1,padx=10,pady=10)
-            Label(self.root2,text="Items: "+self.robbery[f][2]).grid(row=i+f+3,column=1,padx=10,pady=10)
-            Label(self.root2,text="Status: "+self.robbery[f][3]).grid(row=i+f+4,column=1,padx=10,pady=10)
-            Label(self.root2,text="Case Details: "+self.robbery[f][4]).grid(row=i+f+5,column=1,padx=10,pady=10)
+        for j in range(0,len(self.rlist)):
+            Label(self.root2,text="Offence_Id: "+self.robbery[j][0]).grid(row=i+j+1,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.robbery[j][1].strftime('%Y-%m-%d')).grid(row=i+j+2,column=1,padx=10,pady=10)
+            Label(self.root2,text="Items: "+self.robbery[j][2]).grid(row=i+j+3,column=1,padx=10,pady=10)
+            Label(self.root2,text="Status: "+self.robbery[j][3]).grid(row=i+j+4,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.robbery[j][4]).grid(row=i+j+5,column=1,padx=10,pady=10)
+            i=i+5
+            print(len(self.rlist))
+            
         #Violence
-        for g in range(1,len(self.vlist)):
-            Label(self.root2,text="Offence_Id: "+self.violence[g][0]).grid(row=i+f+g+1,column=1,padx=10,pady=10)
-            Label(self.root2,text="Date of offence: "+self.violence[g][1].strftime('%Y-%m-%d')).grid(row=i+f+g+2,column=1,padx=10,pady=10)
-            Label(self.root2,text="type: "+self.violence[g][2]).grid(row=i+f+g+3,column=1,padx=10,pady=10)
-            Label(self.root2,text="status: "+self.violence[g][3]).grid(row=i+f+g+4,column=1,padx=10,pady=10)
-            Label(self.root2,text="Case Details: "+self.violence[g][4]).grid(row=i+f+g+5,column=1,padx=10,pady=10)
+        for k in range(0,len(self.vlist)):
+            Label(self.root2,text="Offence_Id: "+self.violence[k][0]).grid(row=i+j+k+1,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.violence[k][1].strftime('%Y-%m-%d')).grid(row=i+j+k+2,column=1,padx=10,pady=10)
+            Label(self.root2,text="type: "+self.violence[k][2]).grid(row=i+j+k+3,column=1,padx=10,pady=10)
+            Label(self.root2,text="status: "+self.violence[k][3]).grid(row=i+j+k+4,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.violence[k][4]).grid(row=i+j+k+5,column=1,padx=10,pady=10)
+            i=i+5
+            print(len(self.vlist))
+            
         #Drug
-        for h in range(1,len(self.dlist)):
-            Label(self.root2,text="Offence_Id: "+self.drug[h][0]).grid(row=i+f+g+h+1,column=1,padx=10,pady=10)
-            Label(self.root2,text="Date of offence: "+self.drug[h][1].strftime('%Y-%m-%d')).grid(row=i+f+g+h+2,column=1,padx=10,pady=10)
-            Label(self.root2,text="type: "+self.drug[h][2]).grid(row=i+f+g+h+3,column=1,padx=10,pady=10)
-            Label(self.root2,text="status: "+self.drug[h][3]).grid(row=i+f+g+h+4,column=1,padx=10,pady=10)
-            Label(self.root2,text="Case Details: "+self.drug[h][4]).grid(row=i+f+g+h+5,column=1,padx=10,pady=10)
+        for l in range(0,len(self.dlist)):
+            Label(self.root2,text="Offence_Id: "+self.drug[l][0]).grid(row=i+j+k+l+1,column=1,padx=10,pady=10)
+            Label(self.root2,text="Date of offence: "+self.drug[l][1].strftime('%Y-%m-%d')).grid(row=i+j+k+l+2,column=1,padx=10,pady=10)
+            Label(self.root2,text="type: "+self.drug[l][2]).grid(row=i+j+k+l+3,column=1,padx=10,pady=10)
+            Label(self.root2,text="status: "+self.drug[l][3]).grid(row=i+j+k+l+4,column=1,padx=10,pady=10)
+            Label(self.root2,text="Case Details: "+self.drug[l][4]).grid(row=i+j+k+l+5,column=1,padx=10,pady=10)
+            i=i+5
+            print(len(self.dlist))
+            
         self.root2.mainloop()
     
     
@@ -266,7 +286,7 @@ class report:
     
     """insert("P_2","/home/pratz/Downloads/dataset/pix2pix/face/000001.jpg",["T_1","V_1","R_3","D_2"])"""
     """insert("P_3","/home/pratz/Downloads/dataset/pix2pix/face/000129.jpg",["T_4","V_2","R_1"])"""
-
+    """insert("P_4","/home/pratz/Downloads/dataset/sketch-to-images-resized-photos2/resized photos2zip/new_imgs/f-028-01.jpg",["R_2","R_4","T_2"])"""
 
 def retrieve(__id):    
       img_dict=db.photos.find_one({"_id":__id},{"img":1,"offence_id":1,"_id":0})
@@ -282,10 +302,12 @@ def face_match(known_img_path,unknown_img_path):
       unknown_image = face_recognition.load_image_file(unknown_img_path)
       biden_encoding = face_recognition.face_encodings(known_image)[0]
       unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.5)
+      results = face_recognition.compare_faces([biden_encoding], unknown_encoding,tolerance=0.1)
       return results[0]
   
 def face_search(unknown_img_path):
+          no_of_records=db.photos.find({}).count()
+          print(no_of_records)
           for itm in db.photos.find({}):
               retrieve(itm.get('_id'))
           for filename in os.listdir("/home/pratz/retrieved_photos"):
@@ -306,4 +328,3 @@ def face_search(unknown_img_path):
 print(_id)"""
 app = Uploader()
 app.mainloop()
-
