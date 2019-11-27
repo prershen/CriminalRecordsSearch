@@ -112,7 +112,7 @@ class Uploader(Tk):
         print(self.predicted_filename)
         self.pid=face_search(self.predicted_filename)
         if(self.pid==None):             
-             self.notfound=Label(self.preview1,text="Criminal record not found").grid(row=3,column=1,padx=10,pady=10)
+             self.notfound=Label(self.preview1,text="CRIMINAL RECORD NOT FOUND!",fg="red4",font='TIMES 18 bold').grid(row=3,column=1,padx=10,pady=10)
         if(self.pid!=None): 
              found=report(self.pid)
              
