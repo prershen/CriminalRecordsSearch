@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from PIL import ImageTk, Image
-import tkinter
+
 
 from pymongo import MongoClient
 from bson import ObjectId
@@ -14,9 +14,10 @@ from tkinter import *
 from datetime import *
 
 from bson import ObjectId
-
-
-
+import tkinter
+from tkinter import ttk
+from ttkthemes import themed_tk as tk
+import ttk
 import base64
 import codecs
 import face_recognition
@@ -44,21 +45,30 @@ db=client.mugshot
 class Uploader(Tk):
     def __init__(self, *args, **kwargs):
         Tk.__init__(self, *args, **kwargs)
-        self.root = Canvas()
+        
+        self.root = Canvas(height=100,width=100)
         self.root.grid()
         self.title('Criminal Search')  
-        Button(self.root, text='Upload a sketch', command=self.get_image).grid(padx=50,pady=5)
-        Label(text='Click preview picture to upload').grid(pady=5)
+        
+        self.logo = ImageTk.PhotoImage(Image.open("/home/pratz/Criminal-Check.png"))
+
+        Label(self.root, image=self.logo).grid(row=0,column=0)
+        
+        Button(self.root, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
+        
+        
 
     def get_image(self):
+        
         self.file_name = askopenfilename(filetypes=[('JPEG FILES', '*.jpg')])
-
+        
         self.image = ImageTk.PhotoImage(Image.open(self.file_name))
-        self.preview = Toplevel()
+        self.preview = Toplevel(bg='azure')
+        
         self.sketch=Label(self.preview,image=self.image)
-        self.sketch.grid(row=0, column=1, padx=10, pady=10)
-        self.photo= Button(self.preview, command=self.createPhoto, text="Create Photo")
-        self.photo.grid(row=3, column=1, padx=10, pady=10)
+        self.sketch.grid(row=0, column=0, padx=100, pady=25)
+        self.photo= Button(self.preview, command=self.createPhoto, text="CREATE PHOTO",bg="black",fg="white",height=3,width=20)
+        self.photo.grid(row=1,padx=10, pady=5)
         
     def predict_photo(self):
         json_file = open('/home/pratz/Downloads/dataset/results/model28000.json', 'r')
@@ -86,13 +96,13 @@ class Uploader(Tk):
         
 
     def createPhoto(self):
-        self.preview1=Toplevel()
+        self.preview1=Toplevel(bg="ivory2")
         self.predict_photo()
         self.image = ImageTk.PhotoImage(Image.open(self.predicted_filename))
         
         self.photo=Label(self.preview1,image=self.image)
-        self.photo.grid(row=0,column=1,padx=10,pady=10)
-        self.search=Button(self.preview1,command=self.searching,text="Search")
+        self.photo.grid(row=0,column=1,padx=100,pady=25)
+        self.search=Button(self.preview1,command=self.searching,text="SEARCH",bg="black",fg="white",height=3,width=20)
         self.search.grid(row=1,column=1,padx=10,pady=10)
         
         
@@ -122,7 +132,8 @@ class report:
         self.mycursor=self.connection.cursor()
         sql = "SELECT * FROM personal_details WHERE id like '"+self.p_id+"';"
         print(sql)
-        self.root = Tk() 
+        self.root = Tk()      
+        
         self.root.title('Report of found criminal')
         self.mycursor.execute(sql)
         self.myresult = self.mycursor.fetchone()
@@ -130,9 +141,9 @@ class report:
         if self.mycursor.rowcount>0:
                 #print ("Criminal_Id: %s\nName: %s\nDOB: %s\nGender: %s\nAge: %d\nAddress: %s\nEye_color: %s\nHair_color: %s\n Height: %s\nWeight: %s\n"%(x["id"],x["criminal_name"],x["DOB"],x["gender"],x["age"],x["address"],x["eye_color"],x["hair"],x["height"],x["weight"]))
                 #print ("Criminal_Id: %s\nName: %s\nDOB: %s\nGender: %s\nAge: %d\nAddress: %s\nEye_color: %s\nHair_color: %s\n Height: %s\nWeight: %s\n"%(x[0],x[1],x[2],x[3],x[4],x[5],x[6],x[7],x[8],x[9]))
-            Button(self.root,text="Personal Details",command=self.personal).grid(row=1,column=1,padx=10,pady=10)
+            Button(self.root,text="Personal Details",command=self.personal,bg="black",fg="white",height=3,width=20).grid(row=1,column=1,padx=100,pady=30)
             #b1.pack()
-            Button(self.root,text="Criminal History",command=self.offence).grid(row=2,column=1,padx=10,pady=10)
+            Button(self.root,text="Criminal History",command=self.offence,bg="black",fg="white",height=3,width=20).grid(row=2,column=1,padx=100,pady=50)
             #b2.pack()
             self.tlist=[] #traffic
             self.rlist=[] #robbery
@@ -202,32 +213,36 @@ class report:
             print("Not found")
 
     def personal(self):
-        self.root1=Tk()
+        self.root1 = Tk()
+        
+        
         self.root1.title('Personal Details')
         l1=Label(self.root1,text="Criminal Id: "+self.myresult[0])
-        l1.grid(row=1,column=1,padx=10,pady=10)
+        l1.grid(row=1,column=1,padx=30,pady=10)
         l2=Label(self.root1,text="Name: "+self.myresult[1])
-        l2.grid(row=2,column=1,padx=10,pady=10)
+        l2.grid(row=2,column=1,padx=30,pady=10)
         l3=Label(self.root1,text="DOB: "+self.myresult[2].strftime('%Y-%m-%d'))
-        l3.grid(row=3,column=1,padx=10,pady=10)
+        l3.grid(row=3,column=1,padx=30,pady=10)
         l4=Label(self.root1,text="Gender: "+self.myresult[3])
-        l4.grid(row=4,column=1,padx=10,pady=10)
+        l4.grid(row=4,column=1,padx=30,pady=10)
         l5=Label(self.root1,text="Age: "+str(self.myresult[4]))
-        l5.grid(row=5,column=1,padx=10,pady=10)
+        l5.grid(row=5,column=1,padx=30,pady=10)
         l6=Label(self.root1,text="Address: "+self.myresult[5])
-        l6.grid(row=6,column=1,padx=10,pady=10)
+        l6.grid(row=6,column=1,padx=30,pady=10)
         l7=Label(self.root1,text="Eye_color: "+self.myresult[6])
-        l7.grid(row=7,column=1,padx=10,pady=10)
+        l7.grid(row=7,column=1,padx=30,pady=10)
         l8=Label(self.root1,text="Hair_color: "+self.myresult[7])
-        l8.grid(row=8,column=1,padx=10,pady=10)
+        l8.grid(row=8,column=1,padx=30,pady=10)
         l9=Label(self.root1,text="Height: "+self.myresult[8])
-        l9.grid(row=9,column=1,padx=10,pady=10)
+        l9.grid(row=9,column=1,padx=30,pady=10)
         l10=Label(self.root1,text="Weight: "+self.myresult[9])
-        l10.grid(row=10,column=1,padx=10,pady=10)
+        l10.grid(row=10,column=1,padx=30,pady=10)
         
         self.root1.mainloop()
     def offence(self):
-        self.root2=Tk()
+        self.root2 = Tk()
+        
+        
         self.root2.title('Criminal History')
         #Traffic       
         i=j=k=l=0;
