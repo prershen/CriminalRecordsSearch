@@ -52,13 +52,51 @@ class Uploader(Tk):
         self.root.grid()
         self.title('Criminal Search')  
         
-        self.logo = ImageTk.PhotoImage(Image.open("/home/pratz/Criminal-Check.png"))
+        #self.logo = ImageTk.PhotoImage(Image.open("/home/pratz/Criminal-Check.png"))
 
-        Label(self.root, image=self.logo).grid(row=0,column=0)
+        #Label(self.root, image=self.logo).grid(row=0,column=0)
         
-        Button(self.root, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
+        #Button(self.root, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
         
+        Label(self.root, text="Please enter details below to login").grid(padx=10,pady=10)
+        Label(self.root, text="").grid(padx=10,pady=10)
+    
+        global username_verify
+        global password_verify
+    
+        username_verify = StringVar()
+        password_verify = StringVar()
+    
+    
+        Label(self.root, text="Username * ").grid(padx=10,pady=10)
+        username_login_entry = Entry(self.root, textvariable=username_verify)
+        username_login_entry.grid(padx=10,pady=10)
+        Label(self.root, text="").grid(padx=10,pady=10)
+        Label(self.root, text="Password * ").grid(padx=10,pady=10)
+        password__login_entry = Entry(self.root, textvariable=password_verify, show= '*')
+        password__login_entry.grid(padx=10,pady=10)
+        Label(self.root, text="").grid(padx=10,pady=10)
+        Button(self.root, text="Login", width=10, height=1, command=self.login_verification).grid(padx=10,pady=10)
+
+    def login_verification(self):
         
+        connection = mysql.connector.connect(host='localhost',
+                                         database='dbms',
+                                         user='admin',
+                                         password='root1234')
+        self.mycursor=self.connection.cursor()
+        sql = "SELECT * FROM login WHERE user like '"+username_verify+"' and  password like '"+password_verify+"';"
+        self.mycursor.execute(sql)
+        self.login_result = self.mycursor.fetchone()
+        if self.login_result!=None:
+            self.preview2=Toplevel(self.root)
+            self.logo = ImageTk.PhotoImage(Image.open("/home/pratz/Criminal-Check.png"))
+            Label(self.preview2, image=self.logo).grid(row=0,column=0)
+            Button(self.preview2, text='UPLOAD A SKETCH',command=self.get_image,bg="red4",fg="white",height=3,width=20).grid(padx=10,pady=10)
+        else:
+            self.preview2=Toplevel(self.root)
+            Label(self.preview2,text="Wrong credentials. Try Again").grid(padx=10,pady=10)
+
 
     def get_image(self):
         
